@@ -1,0 +1,5 @@
+build/
+dist/
+venv/
+src/kublog.egg-info/
+**/__pycache__/
