@@ -1,10 +1,10 @@
 import setuptools
-from .version import version
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-print(setuptools.find_packages(where="src"))
+with open("version.txt", "r") as version_text:
+    version = version_text.read()
 
 setuptools.setup(
     name="kublog",

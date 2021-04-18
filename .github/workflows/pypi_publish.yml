@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - "version.py"
+      - "version.txt"
 jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
