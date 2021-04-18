@@ -41,8 +41,8 @@ class Colors:
 class ColorfulFormatter(logging.Formatter):
     """Logging Formatter to add colors and count warning / errors"""
 
-    def __init__(self, fmt: Optional[str] = None, datefmt: Optional[str] = None,
-                 style: str = '%', validate: bool = True) -> None:
+    def __init__(self, fmt: str, datefmt: Optional[str] = None, style: str = '%',
+                 validate: bool = True) -> None:
         super().__init__(fmt=fmt, datefmt=datefmt, style=style,
                          validate=validate)
         self.FORMATS = {
@@ -66,10 +66,9 @@ def get_logger(name: str = None, handler: logging.Handler = None, level=logging.
     logger.setLevel(level)
     logger.propagate = propagate
 
-    if handler is None:
-        handler = sys.stdout
-        new_handler = logging.StreamHandler(handler)
-        new_handler.setLevel(level)
+    if not handler:
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(level)
 
         # If APP_ENV is `test` or unset we use a colorful formatter 🌈.
         # Else we use a plain formatter to avoid passing ANSI color characters
@@ -80,17 +79,16 @@ def get_logger(name: str = None, handler: logging.Handler = None, level=logging.
         else:
             formatter = logging.Formatter(formatting)
 
-        new_handler.setFormatter(formatter)
+        handler.setFormatter(formatter)
         if logger.hasHandlers():
             # To prevent the same stream handler from being added multiple times to the
             # same logger. If the same handler (stdout in this case) is added multiple
             # times to the same logger then each log will show up more and more times in
             # that stream.
             logger.handlers.clear()
-    else:
-        new_handler = handler
-    logger.addHandler(new_handler)
+
+    logger.addHandler(handler)
 
     if print_trace_id:
-        logger = KubricLogAdapter(logger, None)
+        logger = KubricLogAdapter(logger, {})
     return logger
