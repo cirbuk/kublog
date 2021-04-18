@@ -1,4 +1,5 @@
 import setuptools
+from .version import version
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -7,7 +8,7 @@ print(setuptools.find_packages(where="src"))
 
 setuptools.setup(
     name="kublog",
-    version="0.0.1",
+    version=version,
     author="Chaitanya Nettem",
     author_email="chaitanya@kubric.io",
     description="A logger utility",

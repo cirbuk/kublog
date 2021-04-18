@@ -20,7 +20,7 @@ class KubricLogAdapter(logging.LoggerAdapter):
         context = copy_context()
         trace_id = None
         for item in context.items():
-            # Ugly hack because contextvars doesn't provide a
+            # Ugly hack because contextvars does not provide a
             # dictionary like interface to get a contextvar by name.
             if item[0].name == TRACE_ID_KEY:
                 trace_id = item[1]
