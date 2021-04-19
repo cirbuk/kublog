@@ -2,7 +2,7 @@
 ###########################
 ## Linter GitHub Actions ##
 ###########################
-name: Lint Code Base
+name: Lint and Test Code Base
 
 #
 # Documentation:
@@ -14,7 +14,7 @@ on: [pull_request]
 
 jobs:
   lint:
-    name: Lint Code Base
+    name: Lint
     # Set the agent to run on
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +60,7 @@ jobs:
           fi
 
   test:
-    name: Test Code Base
+    name: Test
     # Set the agent to run on
     runs-on: ubuntu-latest
     steps:

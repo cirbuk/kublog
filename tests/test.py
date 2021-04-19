@@ -1,8 +1,7 @@
-from unittest import _log
 import unittest
 from src.kubric import logging
 
-_log._AssertLogsContext.LOGGING_FORMAT = logging.DEFAULT_FORMAT_STR
+unittest._log._AssertLogsContext.LOGGING_FORMAT = logging.DEFAULT_FORMAT_STR
 
 
 class TestLogs(unittest.TestCase):
