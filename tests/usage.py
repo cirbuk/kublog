@@ -1,7 +1,6 @@
-import logging
-from kublog import get_logger
+from kubric.logging import get_logger
 
-logger = get_logger(level=logging.DEBUG)
+logger = get_logger()
 logger.debug("debug")
 logger.info("info")
 logger.warning("warning")
