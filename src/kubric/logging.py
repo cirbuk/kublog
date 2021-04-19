@@ -1,7 +1,6 @@
 import logging
 import sys
 from contextvars import copy_context
-from contextvars import ContextVar
 from typing import Optional
 import os
 

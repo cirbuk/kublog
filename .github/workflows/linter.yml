@@ -13,7 +13,7 @@ on: [pull_request]
 
 
 jobs:
-  build:
+  lint:
     name: Lint Code Base
     # Set the agent to run on
     runs-on: ubuntu-latest
@@ -30,17 +30,10 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('dev_requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
-      - name: Setup ssh
-        run: |
-          mkdir ~/.ssh/
-          echo "${{ secrets.NUBRIC_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
       - name: Setup node.js (for pyright)
         uses: actions/setup-node@v1
         with:
@@ -65,3 +58,40 @@ jobs:
             export PYTHONPATH=./src
             pyright $filtered_files
           fi
+
+  test:
+    name: Test Code Base
+    # Set the agent to run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.9.2
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.2
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('dev_requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: |
+          pip install pip==20.2.4
+          pip install -r dev_requirements.txt
+
+      - name: Run tests
+        run: |
+          export PYTHONPATH=.
+          python tests/test.py
+      
+      - name: Try dummy build
+        run: |
+          python -m pip install build
+          python -m build --sdist --wheel --outdir dist/ .
