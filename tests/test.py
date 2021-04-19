@@ -1,14 +1,14 @@
-from unittest import _log
+from unittest import _log  # type: ignore
 import unittest
-from src.kublog import kublog
+from src.kubric import logging
 
-_log._AssertLogsContext.LOGGING_FORMAT = kublog.DEFAULT_FORMAT_STR
+_log._AssertLogsContext.LOGGING_FORMAT = logging.DEFAULT_FORMAT_STR
 
 
 class TestLogs(unittest.TestCase):
 
     def test_logs(self):
-        logger = kublog.get_logger('foo')
+        logger = logging.get_logger('foo')
         with self.assertLogs('foo', level='INFO') as cm:
             logger.info('test message')
             self.assertEqual(cm.output, ['INFO:test.py:13: test message'])
